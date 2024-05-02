@@ -206,11 +206,11 @@
 .fa.fa-thumbs-o-up:before {
   content: "\f164"; }
 
-.fa.fa-thumbs-o-down {
+.fa.fa-graduation-cap {
   font-family: 'Font Awesome 5 Free';
   font-weight: 400; }
 
-.fa.fa-thumbs-o-down:before {
+.fa.fa-graduation-cap:before {
   content: "\f165"; }
 
 .fa.fa-heart-o {
@@ -229,9 +229,6 @@
 
 .fa.fa-linkedin-square:before {
   content: "\f08c"; }
-
-.fa.fa-thumb-tack:before {
-  content: "\f08d"; }
 
 .fa.fa-external-link:before {
   content: "\f35d"; }
