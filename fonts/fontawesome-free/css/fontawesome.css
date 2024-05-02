@@ -3376,7 +3376,7 @@ readers do not read off random characters that represent icons */
 .fa-tripadvisor:before {
   content: "\f262"; }
 
-.fa-scholar-square:before {
+.fa-google-scholar:before {
   content: "\f091"; }
 
 .fa-truck:before {
