@@ -1563,6 +1563,9 @@ readers do not read off random characters that represent icons */
 
 .fa-github-square:before {
   content: "\f092"; }
+.fa-google-scholar:before {
+  content: "\f091";
+}
 
 .fa-gitkraken:before {
   content: "\f3a6"; }
