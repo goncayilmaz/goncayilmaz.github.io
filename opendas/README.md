@@ -23,7 +23,7 @@
 <h2 class="title is-3">BibTeX</h2>
     <pre>
     <code>
-    @inproceedings{yilmaz2024opendas,
+    @article{yilmaz2024opendas,
       title={{OpenDAS: Domain Adaptation for Open-Vocabulary Segmentation}},
       author={Yilmaz, Gonca and Peng, Songyou and Engelmann, Francis and Pollefeys, Marc and Blum, Hermann},
       year={2024}
