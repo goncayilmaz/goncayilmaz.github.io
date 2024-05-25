@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="Domain Adaptation for Open-Vocabulary Segmentation">
+  <meta name="keywords" content="Open-Vocabulary Segmentation, Domain Adaptation, Prompt Tuning, 2D & 3D Scene Understanding">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OpenDAS</title>
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'G-PYVRSFMDRL');
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./static/images/favicon.svg">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+</head>
+<body>
+
+
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">OpenDAS<br />
+            <p class="title is-3 publication-title">Domain Adaptation Open-Vocabulary Segmentation </p>
+          </h1>          
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a href="https://goncayilmaz.github.io/">Gonca Yilmaz</a><sup>1,2</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://pengsongyou.github.io/">Songyou Peng</a><sup>1</sup>,
+            </span>
+            <br />
+            <span class="author-block">
+              <a href="https://francisengelmann.github.io/">Francis Engelmann</a><sup>1,3</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://people.inf.ethz.ch/pomarc/">Marc Pollefeys</a><sup>1,4</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://hermannblum.net/">Hermann Blum</a><sup>1,5</sup>
+            </span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block" style="margin-right: 1em;"><sup>1</sup>ETH Zürich</span>
+            <span class="author-block" style="margin-right: 1em;"><sup>2</sup>University of Zurich</span>
+            <span class="author-block" style="margin-right: 1em;"><sup>3</sup>Google</span></br>
+            <span class="author-block" style="margin-right: 1em;"><sup>4</sup>Microsoft</span>
+            <span class="author-block" style="margin-right: 1em;"><sup>5</sup>Lamarr Institute / Uni Bonn</span>
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- PDF Link. -->
+              <span class="link-block">
+                <a href="static/pdf/opendas.pdf"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Paper</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://arxiv.org/abs/2306.13631"
+                   class="external-link button is-normal is-rounded is-dark" disabled>
+                  <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+              <!-- Code Link. -->
+              <span class="link-block">
+                <a href=""
+                   class="external-link button is-normal is-rounded is-dark" disabled>
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code</span>
+                  </a>
+              </span>
+    
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <img src="static/opendas_images/teaser.jpeg" class="center"/>
+      <br><br>
+      <h2 class="subtitle has-text-centered">
+      <strong>OpenDAS</strong> enhances Vision Language Models for open-vocabulary segmentation by integrating domain-specific priors and using a combination of parameter-efficient prompt tuning and triplet-loss-based training.
+    </h2>
+    </div>
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            The advent of Vision Language Models (VLMs) transformed image understanding from closed-set classifications to dynamic image-language interactions, enabling Open-Vocabulary Segmentation (OVS).
+            Despite this flexibility, VLMs often fall behind closed-set classifiers in accuracy due to their reliance on ambiguous image captions and lack of domain-specific knowledge. 
+            We, therefore, introduce a new task, <i>domain adaptation for open-vocabulary segmentation</i>, enhancing VLMs with domain-specific priors while preserving their open-vocabulary nature. 
+            Existing adaptation methods, when applied to segmentation tasks, improve performance on training queries but can reduce VLM performance on zero-shot text inputs. 
+            To address this shortcoming, we propose an approach that combines parameter-efficient prompt tuning with a triplet-loss-based training strategy. 
+            This strategy is designed to enhance open-vocabulary generalization while adapting to the visual domain. 
+            Our results outperform other parameter-efficient adaptation strategies in open-vocabulary segment classification tasks across indoor and outdoor datasets. 
+            Notably, our approach is the only one that consistently surpasses the original VLM on zero-shot queries. 
+            Our adapted VLMs can be seamlessly integrated into existing OVS pipelines, improving OV-Seg by +6.0% mIoU on ADE20K, and OpenMask3D by +4.1% AP on ScanNet++ Offices without any changes to the methods.          
+          </p>
+        </div>
+      </div>
+    </div>
+    <!--/ Abstract. -->
+
+    <!-- Paper video. -->
+    <!-- <div class="columns is-centered has-text-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">Explanatory Video</h2>
+        <video controls poster="static/images/explanatory_video_poster.jpeg">
+          <source src="static/videos/poster_session.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+    </div> -->
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+       
+      <h2 class="title has-text-centered">OpenDAS adapts to target scenes while keeping the generalization to unseen queries.</h2>
+    
+      <!-- <br> -->
+        <!-- <div class="content has-text-justified">
+          <p>
+            We integrate <i>OpenDAS</i> into a state-of-the-art open-vocabulary 3D instance segmentation pipeline and significantly boost the performance.
+          </p>
+        </div> -->
+        <!-- <h2 class="title is-4">ScanNet++ Offices</h2> -->
+      </div>
+    </div>
+
+    <div class="columns is-centered">
+
+    </div>
+
+  <div class="container is-max-desktop">
+
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+          <h2 class="title is-4">ScanNet++ Offices</h2>
+      </div>
+    </div>
+
+    <div class="columns is-centered">
+
+      <!-- Example 1 -->
+      <div class="column">
+        <div class="content">
+          
+          <img src="static/opendas_images/frame_004990_no_adap.jpeg"
+            class="interpolation-image">
+            <center>
+            <p>
+              <i >No Adaptation</i>
+            </p>
+          </center>
+        </div>
+      </div>
+      <!--/ Example 1 -->
+
+      <!-- Example 2 -->
+      <div class="column">
+        <div class="content">
+          
+          <img src="static/opendas_images/frame_004990_ours.jpeg"
+            class="interpolation-image">
+            <center>
+            <p>
+              <i >OpenDAS (Ours)</i>
+            </p>
+          </center>
+        </div>
+      </div>
+    <!--/ Example 2 -->
+
+    <!-- Example 3 -->
+    <div class="column">
+      <div class="content">
+        
+        <img src="static/opendas_images/frame_004990_gt.jpeg"
+          class="interpolation-image">
+          <center>
+          <p>
+            <i >Ground-Truth</i>
+          </p>
+        </center>
+      </div>
+    </div>
+  <!--/ Example 3 -->
+  </div>
+
+
+  <div class="container is-max-desktop">
+
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+          <h2 class="title is-4">KITTI-360</h2>
+      </div>
+    </div>
+
+    <div class="columns is-centered">
+
+      <!-- Example 1 -->
+      <div class="column">
+        <div class="content">
+          
+          <img src="static/opendas_images/kitti_na_2.drawio.jpeg"
+            class="interpolation-image">
+            <center>
+            <p>
+              <i >No Adaptation</i>
+            </p>
+          </center>
+        </div>
+      </div>
+      <!--/ Example 1 -->
+
+      <!-- Example 2 -->
+      <div class="column">
+        <div class="content">
+          
+          <img src="static/opendas_images/kitti_ours_2.drawio.jpeg"
+            class="interpolation-image">
+            <center>
+            <p>
+              <i >OpenDAS (Ours)</i>
+            </p>
+          </center>
+        </div>
+      </div>
+    <!--/ Example 2 -->
+
+    <!-- Example 3 -->
+    <div class="column">
+      <div class="content">
+        
+        <img src="static/opendas_images/kitti_gt_2.drawio.jpeg"
+          class="interpolation-image">
+          <center>
+          <p>
+            <i >Ground-Truth</i>
+          </p>
+        </center>
+      </div>
+    </div>
+  </div>
+
+    <div class="container is-max-desktop">
+
+      <div class="columns is-centered">
+        <div class="column is-full-width">
+            <h2 class="title is-4">ADE20K</h2>
+        </div>
+      </div>
+  
+      <div class="columns is-centered">
+  
+        <!-- Example 1 -->
+        <div class="column">
+          <div class="content">
+            
+            <img src="static/opendas_images/ADE_val_00000130_no_adap.jpeg"
+              class="interpolation-image">
+              <center>
+              <p>
+                <i >No Adaptation</i>
+              </p>
+            </center>
+          </div>
+        </div>
+        <!--/ Example 1 -->
+  
+        <!-- Example 2 -->
+        <div class="column">
+          <div class="content">
+            
+            <img src="static/opendas_images/ADE_val_00000130_ours.jpeg"
+              class="interpolation-image">
+              <center>
+              <p>
+                <i >OpenDAS (Ours)</i>
+              </p>
+            </center>
+          </div>
+        </div>
+      <!--/ Example 2 -->
+  
+      <!-- Example 3 -->
+      <div class="column">
+        <div class="content">
+          
+          <img src="static/opendas_images/ADE_val_00000130_gt.jpeg"
+            class="interpolation-image">
+            <center>
+            <p>
+              <i >Ground-Truth</i>
+            </p>
+          </center>
+        </div>
+      </div>
+    </div>
+
+</div>
+
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column is-full-width">
+          <h2 class="title is-4 has-text-centered">OpenDAS outperforms existing parameter-efficient adaptation methods.</h2>
+          <p><i>We evaluate segment classification over base queries (B-F1) as well as generalization to unseen, novel queries (N-F1) and the overall weighted F1 (W-F1). To be able to test on novel queries, we evaluate on ScanNet++ Offices (SN++) and cross-dataset by adapting to ADE20K-150 (A-150) and testing on SN++ O and KITTI-360 (K-360). Performance degradation compared to the original CLIP baseline is shown in red.</i></p>
+        </div>
+      </div>
+      <div class="columns is-centered">
+        <div class="column is-full-width">
+          <table class="table is-striped is-bordered is-fullwidth  has-text-centered">
+            <thead>
+              <tr>
+                <th>Method</th>
+                <th>Modality</th>
+                <th># Params</th>
+                <th colspan="3">SN++ Offices</th>
+                <th colspan="3">A-150 → SN++ O</th>
+                <th colspan="3">A-150 → K-360</th>
+              </tr>
+              <tr>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th>W-F1</th>
+                <th>B-F1</th>
+                <th>N-F1</th>
+                <th>W-F1</th>
+                <th>B-F1</th>
+                <th>N-F1</th>
+                <th>W-F1</th>
+                <th>B-F1</th>
+                <th>N-F1</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>No adaptation</td>
+                <td></td>
+                <td></td>
+                <td>11.2</td>
+                <td>11.0</td>
+                <td>12.0</td>
+                <td>11.2</td>
+                <td>11.3</td>
+                <td>11.0</td>
+                <td>24.1</td>
+                <td>23.0</td>
+                <td>24.9</td>
+              </tr>
+              <tr>
+                <td><a href="https://github.com/KaiyangZhou/CoOp/tree/main">CoCoOp</a></td>
+                <td>📘</td>
+                <td>~77K</td>
+                <td>25.7</td>
+                <td>34.3</td>
+                <td>12.7</td>
+                <td>11.2</td>
+                <td>18.0</td>
+                <td>9.9<span class="has-text-danger" style="font-size: 0.75em;">-1.1</span></td>
+                <td>27.1</td>
+                <td>30.4</td>
+                <td>22.1<span class="has-text-danger" style="font-size: 0.75em;">-2.8</span></td>
+              </tr>
+              <tr>
+                <td><a href="https://github.com/KMnP/vpt/tree/main">VPT</a></td>
+                <td>🎨</td>
+                <td>~786K</td>
+                <td>33.8</td>
+                <td>37.6</td>
+                <td>12.8</td>
+                <td>13.0</td>
+                <td>19.2</td>
+                <td>8.8<span class="has-text-danger" style="font-size: 0.75em;">-2.2</span></td>
+                <td>29.5</td>
+                <td>34.8</td>
+                <td>25.8</td>
+              </tr>
+              <tr>
+                <td><a href="https://github.com/mlvlab/RPO/tree/main">RPO</a></td>
+                <td>🎨 📘</td>
+                <td>~43K</td>
+                <td>30.6</td>
+                <td>40.9</td>
+                <td>14.9</td>
+                <td>13.4</td>
+                <td>13.9</td>
+                <td>13.3</td>
+                <td>33.7</td>
+                <td>42.8</td>
+                <td>19.9<span class="has-text-danger" style="font-size: 0.75em;">-5.0</span></td>
+              </tr>
+              <tr>
+                <td><a href="https://github.com/muzairkhattak/multimodal-prompt-learning">MaPLe</a></td>
+                <td>🎨 📘</td>
+                <td>~18935K</td>
+                <td>36.3</td>
+                <td>48.1</td>
+                <td>18.4</td>
+                <td>18.8</td>
+                <td>29.3</td>
+                <td>16.8</td>
+                <td>43.5</td>
+                <td>57.7</td>
+                <td>22.2<span class="has-text-danger" style="font-size: 0.75em;">-2.7</span></td>
+              </tr>
+              <tr>
+                <td><strong>OpenDAS (Ours)</strong></td>
+                <td>🎨 📘</td>
+                <td>~233K</td>
+                <td><strong>40.2</strong></td>
+                <td><strong>51.5</strong></td>
+                <td><strong>23.0</strong></td>
+                <td><strong>23.0</strong></td>
+                <td><strong>30.4</strong></td>
+                <td><strong>21.6</strong></td>
+                <td><strong>47.1</strong></td>
+                <td><strong>60.8</strong></td>
+                <td><strong>26.6</strong></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+
+<section class="section">
+  <div class="container is-max-desktop">
+
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+       
+      <h2 class="title is-4  has-text-centered">OpenDAS boosts SOTA Open-Vocabulary 3D Instance Segmentation Model in the target domain.</h2>
+<!--     
+      <br>
+        <div class="content has-text-justified">
+          <p>
+            We integrate <i>OpenDAS</i> into OpenMask3D and significantly boost their performance in the target domain.
+          </p>
+        </div> -->
+      </div>
+    </div>
+
+    <div class="columns is-centered">
+
+    </div>
+
+  <div class="container is-max-desktop">
+
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+          <h2 class="title is-5">Base Query: "wall socket"</h2>
+      </div>
+    </div>
+
+    <div class="columns is-centered">
+
+      <!-- Example 1 -->
+      <div class="column">
+        <div class="content">
+          
+          <img src="static/opendas_images/wall_socket_rgb.jpeg"
+            class="interpolation-image">
+            <center>
+            <p>
+              <i >Input</i>
+            </p>
+          </center>
+        </div>
+      </div>
+      <!--/ Example 1 -->
+
+      <!-- Example 2 -->
+      <div class="column">
+        <div class="content">
+          
+          <img src="static/opendas_images/wall_socket_clip.jpeg"
+            class="interpolation-image">
+            <center>
+            <p>
+              <i >OpenMask3D</i>
+            </p>
+          </center>
+        </div>
+      </div>
+    <!--/ Example 2 -->
+
+    <!-- Example 3 -->
+    <div class="column">
+      <div class="content">
+        
+        <img src="static/opendas_images/wall_socket_opendas.jpeg"
+          class="interpolation-image">
+          <center>
+          <p>
+            <i >+ OpenDAS (Ours)</i>
+          </p>
+        </center>
+      </div>
+    </div>
+  <!--/ Example 3 -->
+  </div>
+
+  <div class="columns is-centered">
+    <div class="column is-full-width">
+        <h2 class="title is-5">Novel Query: "robot arm"</h2>
+    </div>
+  </div>
+
+  <div class="columns is-centered">
+
+    <!-- Example 1 -->
+    <div class="column">
+      <div class="content">
+        
+        <img src="static/opendas_images/robot_arm_rgb.jpeg"
+          class="interpolation-image">
+          <center>
+          <p>
+            <i >Input</i>
+          </p>
+        </center>
+      </div>
+    </div>
+    <!--/ Example 1 -->
+
+    <!-- Example 2 -->
+    <div class="column">
+      <div class="content">
+        
+        <img src="static/opendas_images/robot_arm_openmask.jpeg"
+          class="interpolation-image">
+          <center>
+          <p>
+            <i >OpenMask3D</i>
+          </p>
+        </center>
+      </div>
+    </div>
+  <!--/ Example 2 -->
+
+  <!-- Example 3 -->
+  <div class="column">
+    <div class="content">
+      
+      <img src="static/opendas_images/robot_arm_with_opendas.jpeg"
+        class="interpolation-image">
+        <center>
+        <p>
+          <i >+ OpenDAS (Ours)</i>
+        </p>
+      </center>
+    </div>
+  </div>
+<!--/ Example 3 -->
+</div>
+</div>
+
+<br>
+
+<h2 class="title is-3">BibTeX</h2>
+<pre><code>
+@inproceedings{yilmaz2024opendas,
+  title={{OpenDAS: Domain Adaptation for Open-Vocabulary Segmentation}},
+  author={Yilmaz, Gonca and Peng, Songyou and Engelmann, Francis and Pollefeys, Marc and Blum, Hermann},
+  year={2024}
+}</code></pre>
+
+</section>
+
+
+<footer class="footer">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+            This website is licensed under a <a rel="license"
+              href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+              Commons Attribution-ShareAlike 4.0 International License</a>.
+            We thank the authors of <a href="https://github.com/nerfies/nerfies.github.io">this website</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
+
+
