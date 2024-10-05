@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="description"
-        content="Domain Adaptation for Open-Vocabulary Segmentation">
+        content="Open-Vocabulary Domain Adaptation for Segmentation">
   <meta name="keywords" content="Open-Vocabulary Segmentation, Domain Adaptation, Prompt Tuning, 2D & 3D Scene Understanding">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>OpenDAS</title>
@@ -50,7 +50,7 @@
       <div class="columns is-centered">
         <div class="column has-text-centered">
           <h1 class="title is-1 publication-title">OpenDAS<br />
-            <p class="title is-3 publication-title">Domain Adaptation for Open-Vocabulary Segmentation </p>
+            <p class="title is-3 publication-title">Open-Vocabulary Domain Adaptation for Segmentation </p>
           </h1>          
 
           <div class="is-size-5 publication-authors">
@@ -60,32 +60,33 @@
             <span class="author-block">
               <a href="https://pengsongyou.github.io/">Songyou Peng</a><sup>1</sup>,
             </span>
-            <br />
             <span class="author-block">
-              <a href="https://francisengelmann.github.io/">Francis Engelmann</a><sup>1,3</sup>,
+              <a href="https://people.inf.ethz.ch/pomarc/">Marc Pollefeys</a><sup>1,3</sup>,
             </span>
             <span class="author-block">
-              <a href="https://people.inf.ethz.ch/pomarc/">Marc Pollefeys</a><sup>1,4</sup>,
+              <a href="https://francisengelmann.github.io/">Francis Engelmann</a><sup>1,4,&dagger;</sup>,
             </span>
             <span class="author-block">
-              <a href="https://hermannblum.net/">Hermann Blum</a><sup>1,5</sup>
+              <a href="https://hermannblum.net/">Hermann Blum</a><sup>1,5,&dagger;</sup>
             </span>
           </div>
 
           <div class="is-size-5 publication-authors">
             <span class="author-block" style="margin-right: 1em;"><sup>1</sup>ETH Zürich</span>
             <span class="author-block" style="margin-right: 1em;"><sup>2</sup>University of Zurich</span>
-            <span class="author-block" style="margin-right: 1em;"><sup>3</sup>Google</span></br>
-            <span class="author-block" style="margin-right: 1em;"><sup>4</sup>Microsoft</span>
+            <span class="author-block" style="margin-right: 1em;"><sup>3</sup>Microsoft</span>
+            <span class="author-block" style="margin-right: 1em;"><sup>4</sup>Google</span></br>
             <span class="author-block" style="margin-right: 1em;"><sup>5</sup>Lamarr Institute / Uni Bonn</span>
+            <br />
+            <span class="author-block" style="margin-right: 1em; font-size: 18px;"><sup>&dagger;</sup>Equal supervision.</span>
           </div>
 
           <div class="column has-text-centered">
             <div class="publication-links">
               <!-- PDF Link. -->
               <span class="link-block">
-                <a href="static/pdf/opendas.pdf"
-                   class="external-link button is-normal is-rounded is-dark">
+                <a href="static/pdf/OpenDAS.pdf"
+                  class="external-link button is-normal is-rounded is-dark">
                   <span class="icon">
                       <i class="fas fa-file-pdf"></i>
                   </span>
@@ -125,10 +126,10 @@
 <section class="hero teaser">
   <div class="container is-max-desktop">
     <div class="hero-body">
-      <img src="static/opendas_images/teaser.jpeg" class="center"/>
+      <img src="static/opendas_images/_teaser_opendas_final.jpeg" class="center"/>
       <br><br>
       <h2 class="subtitle has-text-centered">
-      <strong>OpenDAS</strong> enhances Vision Language Models for open-vocabulary segmentation by integrating domain-specific priors and using a combination of parameter-efficient prompt tuning and triplet-loss-based training.
+      <strong>OpenDAS</strong> enhances Vision-Language Models for open-vocabulary segmentation by integrating domain-specific priors and using a combination of parameter-efficient prompt tuning and triplet-loss-based training.
     </h2>
     </div>
   </div>
@@ -143,15 +144,11 @@
         <h2 class="title is-3">Abstract</h2>
         <div class="content has-text-justified">
           <p>
-            The advent of Vision Language Models (VLMs) transformed image understanding from closed-set classifications to dynamic image-language interactions, enabling Open-Vocabulary Segmentation (OVS).
-            Despite this flexibility, VLMs often fall behind closed-set classifiers in accuracy due to their reliance on ambiguous image captions and lack of domain-specific knowledge. 
-            We, therefore, introduce a new task, <i>domain adaptation for open-vocabulary segmentation</i>, enhancing VLMs with domain-specific priors while preserving their open-vocabulary nature. 
-            Existing adaptation methods, when applied to segmentation tasks, improve performance on training queries but can reduce VLM performance on zero-shot text inputs. 
-            To address this shortcoming, we propose an approach that combines parameter-efficient prompt tuning with a triplet-loss-based training strategy. 
-            This strategy is designed to enhance open-vocabulary generalization while adapting to the visual domain. 
-            Our results outperform other parameter-efficient adaptation strategies in open-vocabulary segment classification tasks across indoor and outdoor datasets. 
-            Notably, our approach is the only one that consistently surpasses the original VLM on zero-shot queries. 
-            Our adapted VLMs can be seamlessly integrated into existing OVS pipelines, improving OV-Seg by +6.0% mIoU on ADE20K, and OpenMask3D by +4.1% AP on ScanNet++ Offices without any changes to the methods.          
+            Recently, Vision-Language Models (VLMs) have advanced segmentation techniques by shifting from the traditional segmentation of a <i>closed-set</i> of predefined object classes to <i>open-vocabulary</i> segmentation (OVS), allowing users to segment novel classes and concepts unseen during training of the segmentation model.
+            However, this flexibility comes with a trade-off: fully-supervised closed-set methods still outperform OVS methods on base classes, that is on classes on which they have been explicitly trained. This is due to the lack of pixel-aligned training masks for VLMs (which are trained on image-caption pairs), and the absence of domain-specific knowledge, such as autonomous driving.
+            Therefore, we propose the task of <i>open-vocabulary domain adaptation</i> to infuse domain-specific knowledge into VLMs while preserving their open-vocabulary nature. By doing so, we achieve improved performance in base and novel classes. Existing VLM adaptation methods improve performance on base (training) queries, but fail to fully preserve the open-set capabilities of VLMs on novel queries.
+            To address this shortcoming, we combine parameter-efficient prompt tuning with a triplet-loss-based training strategy that uses auxiliary negative queries.
+            Notably, our approach is the only parameter-efficient method that consistently surpasses the original VLM on novel classes. Our adapted VLMs can seamlessly be integrated into existing OVS pipelines, e.g., improving OVSeg by +6.0% mIoU on ADE20K for open-vocabulary 2D segmentation, and OpenMask3D by +4.1% AP on ScanNet++ Offices for open-vocabulary 3D instance segmentation without other changes.
           </p>
         </div>
       </div>
@@ -629,8 +626,8 @@
 <h2 class="title is-3">BibTeX</h2>
 <pre><code>
   @misc{yilmaz2024opendas,
-    title={OpenDAS: Domain Adaptation for Open-Vocabulary Segmentation}, 
-    author={Gonca Yilmaz and Songyou Peng and Francis Engelmann and Marc Pollefeys and Hermann Blum},
+    title={OpenDAS: Open-Vocabulary Domain Adaptation for Segmentation}, 
+    author={Gonca Yilmaz and Songyou Peng and Marc Pollefeys and Francis Engelmann and Hermann Blum},
     year={2024},
     eprint={2405.20141},
     archivePrefix={arXiv},
